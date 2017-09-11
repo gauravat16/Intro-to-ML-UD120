@@ -1,4 +1,4 @@
-ud120-projects
+ud120-project
 ==============
 
-Starter project code for students taking Udacity ud120
+My Modified code for ud120.
