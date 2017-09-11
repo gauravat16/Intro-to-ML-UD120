@@ -10,7 +10,7 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary','bonus'] # You will need to use more features
+features_list = ['poi','salary','bonus','shared_receipt_with_poi','total_stock_value','from_this_person_to_poi','from_poi_to_this_person'] # You will need to use more features
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -34,10 +34,8 @@ data_dict.pop('TOTAL',0)
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
-print my_dataset
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
-print data
 labels, features = targetFeatureSplit(data)
 
 ### Task 4: Try a varity of classifiers
@@ -48,7 +46,14 @@ labels, features = targetFeatureSplit(data)
 
 # Provided to give you a starting point. Try a variety of classifiers.
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn import tree
+
 clf = GaussianNB()
+# clf=clf = SVC(kernel="rbf",C=10)
+# clf = tree.DecisionTreeClassifier(min_samples_split=40)
+
+
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
 ### folder for details on the evaluation method, especially the test_classifier
@@ -66,8 +71,11 @@ features_train, features_test, labels_train, labels_test = \
 clf.fit(features_train,labels_train)
 
 res = []
-for i in range(0,29):
+for i in range(0,len(features_test)):
     res.append(clf.predict(features_test[i]))
+print labels_test
+print res
+
 
 print precision_score(labels_test,res)
 print recall_score(labels_test,res)
