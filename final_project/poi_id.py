@@ -10,19 +10,34 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi','salary'] # You will need to use more features
+features_list = ['poi','salary','bonus'] # You will need to use more features
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
     data_dict = pickle.load(data_file)
 
+
 ### Task 2: Remove outliers
+# data = featureFormat(data_dict, features_list)
+# import matplotlib.pyplot
+#
+# for point in data:
+#     salary = point[0]
+#     bonus = point[1]
+#     matplotlib.pyplot.scatter( salary, bonus )
+#
+# matplotlib.pyplot.xlabel("salary")
+# matplotlib.pyplot.ylabel("bonus")
+# matplotlib.pyplot.show()
+data_dict.pop('TOTAL',0)
+
 ### Task 3: Create new feature(s)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
-
+print my_dataset
 ### Extract features and labels from dataset for local testing
 data = featureFormat(my_dataset, features_list, sort_keys = True)
+print data
 labels, features = targetFeatureSplit(data)
 
 ### Task 4: Try a varity of classifiers
@@ -34,8 +49,7 @@ labels, features = targetFeatureSplit(data)
 # Provided to give you a starting point. Try a variety of classifiers.
 from sklearn.naive_bayes import GaussianNB
 clf = GaussianNB()
-
-### Task 5: Tune your classifier to achieve better than .3 precision and recall 
+### Task 5: Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
 ### folder for details on the evaluation method, especially the test_classifier
 ### function. Because of the small size of the dataset, the script uses
@@ -43,9 +57,23 @@ clf = GaussianNB()
 ### http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html
 
 # Example starting point. Try investigating other evaluation techniques!
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
+
 from sklearn.cross_validation import train_test_split
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
+clf.fit(features_train,labels_train)
+
+res = []
+for i in range(0,29):
+    res.append(clf.predict(features_test[i]))
+
+print precision_score(labels_test,res)
+print recall_score(labels_test,res)
+
+
+print clf.score(features_test,labels_test)
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure

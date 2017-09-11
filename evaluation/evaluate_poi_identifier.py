@@ -23,9 +23,36 @@ features_list = ["poi", "salary"]
 
 data = featureFormat(data_dict, features_list)
 labels, features = targetFeatureSplit(data)
+sort_keys = '../tools/python2_lesson14_keys.pkl'
+
 
 
 
 ### your code goes here 
 
 
+
+from sklearn import tree
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+
+from sklearn.model_selection import train_test_split
+
+clf = tree.DecisionTreeClassifier()
+features_train, features_test, labels_train, labels_test = train_test_split( features, labels, test_size=0.30, random_state=42)
+clf.fit(features_train,labels_train)
+print clf.score(features_test,labels_test)
+
+
+print len(labels_test)
+
+print
+res = []
+for i in range(0,29):
+    # print clf.predict(features_test[i])
+    # print i
+    # print features_test[i]
+    res.append(clf.predict(features_test[i]))
+
+print precision_score(labels_test,res)
+print recall_score(labels_test,res)

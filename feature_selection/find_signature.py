@@ -37,7 +37,29 @@ labels_train   = labels_train[:150]
 
 
 
+
 ### your code goes here
 
 
+from sklearn import tree
+decisionTreeClf = tree.DecisionTreeClassifier(min_samples_split=40)
+decisionTreeClf.fit(features_train,labels_train)
 
+print decisionTreeClf.score(features_test,labels_test)
+
+#feature importance
+
+impList = decisionTreeClf.feature_importances_
+
+max=0
+index=0
+for val in impList:
+    if val>max:
+        max=val
+
+
+print max
+
+print impList.tolist().index(max)
+
+print vectorizer.get_feature_names().__getitem__(impList.tolist().index(max))
