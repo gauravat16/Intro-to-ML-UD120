@@ -32,6 +32,8 @@ classifier = GaussianNB()
 
 time_before_fitting = time()
 
+print features_train
+print labels_train
 classifier.fit(features_train,labels_train)
 print "Time to fit",round(time()-time_before_fitting,3),"s"
 time_before_prediction = time()
